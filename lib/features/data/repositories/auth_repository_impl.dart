@@ -66,13 +66,6 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
   }) async {
     try {
-      // Logging request data
-      print('auth_repository_impl.dart');
-      print(name);
-      print(email);
-      print(password);
-      print('Attempting to sign up user with email: $email');
-
       final userId = await remoteDataSource.signUpWithEmailPassword(
         name: name,
         email: email,

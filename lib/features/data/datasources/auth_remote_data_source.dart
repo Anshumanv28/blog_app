@@ -39,10 +39,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       print(email);
       print(name);
       final response = await supabaseClient.auth.signUp(
-        password: 'password#1O1',
-        email: 'anshumanmishra1@gmail.com',
+        password: password,
+        email: email,
         data: {
-          name: 'Anshuman1',
+          "name": name,
         },
       );
       if (response.user == null) {
