@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static _border([Color color = AppPallete.borderColor]) => OutlineInputBorder(
-        //if no color is passes as an argument then it uses this defautl color
+        //if no color is passes as an argument then it uses this default color
         borderSide: BorderSide(
           color: color,
           width: 1.5,

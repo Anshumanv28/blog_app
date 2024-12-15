@@ -6,7 +6,6 @@ import 'package:blog_app/features/presentation/widgets/auth_field.dart';
 import 'package:blog_app/features/presentation/widgets/auth_gradient_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../core/utils/show_snackbar.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -86,10 +85,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     buttonText: 'Sign Up',
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
-                        print('Signup_page.dart');
-                        print(emailController.text.trim());
-                        print(passwordController.text.trim());
-                        print(nameController.text.trim());
                         context.read<AuthBloc>().add(
                               AuthSignUp(
                                 email: emailController.text.trim(),
@@ -114,13 +109,14 @@ class _SignUpPageState extends State<SignUpPage> {
                         style: Theme.of(context).textTheme.titleMedium,
                         children: [
                           TextSpan(
-                              text: 'Sign In',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                      color: AppPallete.gradient1,
-                                      fontWeight: FontWeight.bold))
+                            text: 'Sign In',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                    color: AppPallete.gradient1,
+                                    fontWeight: FontWeight.bold),
+                          )
                         ],
                       ),
                     ),

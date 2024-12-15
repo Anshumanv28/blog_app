@@ -1,50 +1,10 @@
-// import 'package:blog_app/core/error/exceptions.dart';
-// import 'package:blog_app/core/error/failure.dart';
-// import 'package:blog_app/features/data/datasources/auth_remote_data_source.dart';
-// import 'package:blog_app/features/domain/repository/auth_repository.dart';
-// import 'package:fpdart/fpdart.dart';
-//
-// class AuthRepositoryImpl implements AuthRepository {
-//   final AuthRemoteDataSource remoteDataSource;
-//   const AuthRepositoryImpl(this.remoteDataSource);
-//
-//   @override
-//   Future<Either<Failure, String>> loginWithEmailPassword({
-//     required String email,
-//     required String password,
-//   }) {
-//     // TODO: implement loginWithEmailPassword
-//     throw UnimplementedError();
-//   }
-//
-//   @override
-//   Future<Either<Failure, String>> signUpWithEmailPassword({
-//     required String name,
-//     required String email,
-//     required String password,
-//   }) async {
-//     try {
-//       print('Signing up user with email: $email');
-//       final userId = await remoteDataSource.signUpWithEmailPassword(
-//         name: name,
-//         email: email,
-//         password: password,
-//       );
-//
-//       return right(userId);
-//     } on ServerException catch (e) {
-//       return left(Failure(e.message));
-//       // return left(Failure(message: e.message));
-//     }
-//   }
-// }
-
 import 'package:blog_app/core/error/exceptions.dart';
 import 'package:blog_app/core/error/failure.dart';
 import 'package:blog_app/features/data/datasources/auth_remote_data_source.dart';
 import 'package:blog_app/features/domain/entities/user.dart';
 import 'package:blog_app/features/domain/repository/auth_repository.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sb;
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSource remoteDataSource;
@@ -55,9 +15,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, User>> loginWithEmailPassword({
     required String email,
     required String password,
-  }) {
-    // Implementation for loginWithEmailPassword would go here
-    throw UnimplementedError();
+  }) async {
+    return _getUser(
+      () async => await remoteDataSource.loginWithEmailPassword(
+          email: email, password: password),
+    );
   }
 
   @override
@@ -85,5 +47,19 @@ class AuthRepositoryImpl implements AuthRepository {
       print('Unexpected error during signup: $e');
       return left(Failure('Unexpected error occurred. Please try again.'));
     }
+  }
+}
+
+Future<Either<Failure, User>> _getUser(
+  Future<User> Function() fn,
+) async {
+  try {
+    final user = await fn();
+
+    return right(user);
+  } on sb.AuthException catch (e) {
+    return left(Failure(e.message));
+  } on ServerException catch (e) {
+    return left(Failure(e.message));
   }
 }

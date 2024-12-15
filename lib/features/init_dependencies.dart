@@ -6,6 +6,7 @@ import 'package:blog_app/features/domain/usecases/user_sign_up.dart';
 import 'package:blog_app/features/presentation/bloc/auth_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:blog_app/features/domain/usecases/user_login.dart';
 
 final serviceLocator = GetIt.instance;
 
@@ -35,9 +36,16 @@ void _initAuth() {
     ),
   );
 
+  serviceLocator.registerFactory(
+    () => UserLogin(
+      serviceLocator(),
+    ),
+  );
+
   serviceLocator.registerLazySingleton(
     () => AuthBloc(
       userSignUp: serviceLocator(),
+      userLogin: serviceLocator(),
     ),
   );
 }

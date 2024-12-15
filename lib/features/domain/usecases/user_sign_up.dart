@@ -9,10 +9,6 @@ class UserSignUp implements UseCase<User, UserSignUpParams> {
   const UserSignUp(this.authRepository);
   @override
   Future<Either<Failure, User>> call(UserSignUpParams params) async {
-    print('params in user_sign_up.dart');
-    print(params.name);
-    print(params.email);
-    print(params.password);
     return await authRepository.signUpWithEmailPassword(
       name: params.name,
       email: params.email,
